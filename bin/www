@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('dotenv').config();
+
 /**
  * Module dependencies.
  */
@@ -7,6 +9,7 @@
 const app = require('../dist/app').default;
 const debug = require('debug')('sq003-contact-app:server');
 const http = require('http');
+const mongoose = require('mongoose');
 
 /**
  * Get port from environment and store in Express.
@@ -14,6 +17,15 @@ const http = require('http');
 
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+/** Connect to MongoDB */
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+mongoose.connection.on('connected', mongoConnected);
+mongoose.connection.on('disconnected', mongoDisconnected);
+mongoose.connection.on('error', mongoError);
 
 /**
  * Create HTTP server.
@@ -58,9 +70,7 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -83,8 +93,18 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
+}
+
+function mongoConnected() {
+  debug('MongoDB connected successfully');
+}
+
+function mongoDisconnected(reason) {
+  debug('MongoDB disconnected - %o', reason);
+}
+
+function mongoError(err) {
+  console.error('Mongo Error', err);
 }
