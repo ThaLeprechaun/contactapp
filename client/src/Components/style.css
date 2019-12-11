@@ -1,0 +1,45 @@
+.holder{
+  /* background-color: yellow; */
+  margin: 50px;
+}
+.contact-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* transform: translateX(10px); */
+}
+.header-content{
+  font-weight: bold;
+  font-size: 20px;
+}
+.contact-detail{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.circle{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: grey;
+  color: white;
+  font-size: 10px;
+  text-align: center;
+}
+.contact-name{
+  margin-left: 20px;
+}
+.circle-text{
+  margin: 15px;
+}
+
+/*Contact Details*/
+.contact-info{
+  background-color: #0063B1;
+  color: white;
+}
+.welcome-note{
+  text-align: center;
+  font-weight: bold;
+  margin-top: 100px;
+}
